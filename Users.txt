@@ -1,0 +1,11 @@
+Users:
+
+First Name: Luis
+Last Name: Garcia
+Email: luisgarcia@ims.com
+Pass: prueba1
+
+First Name: Admin
+Last Name: Admin
+Email: admin@ims.com
+Pass: admin1234
