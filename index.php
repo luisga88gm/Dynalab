@@ -1,93 +1,67 @@
+<?php
+// Start the session securely
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header('Location: login.php');
+    exit();
+}
+
+// Include necessary files for reusable components
+require_once 'config.php'; // Database connection
+require_once 'functions.php'; // Utility functions (if any)
+
+// Get user data securely
+$user_id = $_SESSION['user_id'];
+$sql = "SELECT * FROM users WHERE id = ?";
+$stmt = $mysqli->prepare($sql);
+$stmt->bind_param('i', $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$user = $result->fetch_assoc();
+
+// HTML Layout (Using Bootstrap for responsiveness)
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Dynalab SRL - Herrajes y Conectores para la industria de la energía</title>
-    <link rel="stylesheet" type="text/css" href="css/login.css">
-    <script src="http://use.fontawesome.com/0c7a3095b5.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynalab - Dashboard</title>
+    <!-- Bootstrap CDN for responsive layout -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding-top: 50px;
+        }
+    </style>
 </head>
 <body>
-    <div class="header">
-        <div class="homepageContainer">
-            <a href="login.php">Login</a>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+        <a class="navbar-brand" href="#">Dynalab</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item"><a class="nav-link" href="profile.php">Profile</a></li>
+                <li class="nav-item"><a class="nav-link" href="logout.php">Logout</a></li>
+            </ul>
         </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mt-5">
+        <h1>Welcome, <?php echo htmlspecialchars($user['name']); ?>!</h1>
+        <p>Your account is secure and running smoothly.</p>
+        <!-- Other content and dynamic sections here -->
     </div>
-    <div class="banner">
-        <div class="homepageContainer">
-            <div class="bannerHeader">
-                <h1>Dynalab SRL</h1>
-                <br>
-                <p>Herrajes y Conectores para la industria de la energía</p>
-            </div>
-            <p class="bannerTagline">Fábrica y distribución de Herrajes y Conectores para LAT y ET.</p>
-            <div class="bannerIcons">
-                <a href=""><i class="fa fa-apple"></i></a>
-                <a href=""><i class="fa fa-android"></i></a>
-                <a href=""><i class="fa fa-windows"></i></a>
-            </div>
+
+    <!-- Footer -->
+    <footer class="footer mt-auto py-3 bg-light">
+        <div class="container">
+            <span class="text-muted">Dynalab © 2024</span>
         </div>
-    </div>
-    <div class="homepageContainer">
-        <div class="homepageFeatures">
-            <div class="homepageFeature">
-                <span class="featureIcon"><i class="fa fa-gear"></i></span>
-                <h3 class="featureTitle">Editable Theme</h3>
-                <p class="featureDescription">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum voluptatem illum.</p>
-            </div>
-            <div class="homepageFeature">
-                <span class="featureIcon"><i class="fa fa-star"></i></span>
-                <h3 class="featureTitle">Flat Design</h3>
-                <p class="featureDescription">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum voluptatem illum.</p>
-            </div>
-            <div class="homepageFeature">
-                <span class="featureIcon"><i class="fa fa-globe"></i></span>
-                <h3 class="featureTitle">Reach Your Audience</h3>
-                <p class="featureDescription">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum voluptatem illum.</p>
-            </div>
-        </div>
-    </div>
-    <div class="homepageNotified">
-        <div class="homepageContainer">
-            <div class="homepageNotifiedContainer">
-                <div class="emailForm">
-                    <h3>Get notified of any updates!</h3>
-                    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Placeat mollitia eaque laboriosam molestias officia odio ipsa maiores ab quo iste nisi velit quod soluta, saepe dolore libero exercitationem earum aspernatur!
-                    </p>
-                    <form action="">
-                        <div class="formContainer">
-                            <input type="text" placeholder="Email Address" />
-                            <button>Notify</button>
-                        </div>
-                    </form>
-                </div>
-                <div class="video">
-                    <iframe src="https://www.youtube.com/embed/48VkVOHYGWw" frameborder="0"></iframe>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="socials">
-        <div class="homepageContainer">
-            <h3 class="socialHeader">Say Hi & Get In Touch</h3>
-            <p class="socialText">Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
-            <div class="socialIconsContainer">
-                <a href=""><i class="fa fa-twitter"></i></a>
-                <a href=""><i class="fa fa-facebook"></i></a>
-                <a href=""><i class="fa fa-pinterest"></i></a>
-                <a href=""><i class="fa fa-google-plus"></i></a>
-                <a href=""><i class="fa fa-linkedin"></i></a>
-                <a href=""><i class="fa fa-youtube"></i></a>
-            </div>
-        </div>
-    </div>
-    <div class="footer">
-        <div class="homepageContainer">
-            <a href="">Contact</a>
-            <a href="">Download</a>
-            <a href="">Press</a>
-            <a href="">Email</a>
-            <a href="">Support</a>
-            <a href="">Privacy Policy</a>
-        </div>
-    </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
